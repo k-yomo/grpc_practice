@@ -105,5 +105,5 @@ func doClientStreaming(c greetpb.GreetServiceClient) {
 	if err != nil {
 		log.Fatalf("Error while reciving respose from LongGreet: %v", err)
 	}
-	fmt.Printf("LongGreet Reponse: %v", res)
+	fmt.Printf("LongGreet Reponse: %v\n", res)
 }
