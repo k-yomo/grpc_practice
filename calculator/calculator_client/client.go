@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/yomoda07/grpc_go_course/calculator/calculatorpb"
+	"github.com/k-yomo/grpc_practice/calculator/calculatorpb"
 	"google.golang.org/grpc"
 	"io"
 	"log"
