@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/k-yomo/grpc_practice/calculator/calculatorpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"strconv"
@@ -23,7 +25,8 @@ func main() {
 	//doUnary(c)
 	//doServerStreaming(c)
 	//doClientStreaming(c)
-	doBiDiStreaming(c)
+	//doBiDiStreaming(c)
+	doErrorUnary(c, -2)
 }
 
 func doUnary(c calculatorpb.CalculatorServiceClient) {
@@ -136,5 +139,24 @@ func doBiDiStreaming(c calculatorpb.CalculatorServiceClient)  {
 		close(waitc)
 	}()
 	<-waitc
+}
+
+func doErrorUnary(c calculatorpb.CalculatorServiceClient, num int32)  {
+	fmt.Println("Starting to do a Sqarearoot Unary RPC...")
+	res, err := c.SquareRoot(context.Background(), &calculatorpb.SquareRootRequest{Num: num})
+	if err != nil {
+		respErr, ok := status.FromError(err)
+		if ok {
+			fmt.Println(respErr.Message())
+			fmt.Println(respErr.Code())
+			if respErr.Code() == codes.InvalidArgument {
+				fmt.Println("Negative number was sent")
+			}
+		} else {
+			log.Fatalf("Big Error calling SqareRoot: %v", err)
+		}
+	}
+
+	fmt.Printf("Result of sqare root of %v:%v\n", num, res.GetNumRoot())
 }
 
