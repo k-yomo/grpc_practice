@@ -1,1 +1,5 @@
 .idea
+
+ssl/*.key
+ssl/server.pem
+ssl/server.crt
